@@ -123,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="10dp"/>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btn_login"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
@@ -146,7 +146,7 @@
                     android:layout_marginBottom="10dp"
                     android:alpha="0.7"/>
 
-                <com.google.android.material.button.MaterialButton
+                <Button
                     android:id="@+id/btn_register"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
