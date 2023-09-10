@@ -133,15 +133,25 @@
 
                 <View
                     android:layout_width="wrap_content"
-                    android:layout_height="100dp"/>
+                    android:layout_height="5dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#ededed" />
 
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Please login with your details"
+                    android:text="New User?"
                     android:alpha="0.7"/>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Register"
+                    android:textColor="@color/white"
+                    android:background="@drawable/login_button_shape"
+                    app:cornerRadius="32dp"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
