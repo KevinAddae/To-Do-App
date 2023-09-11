@@ -38,7 +38,9 @@ public class LoginActivity extends AppCompatActivity {
         pass = findViewById(R.id.edit_password);
 
         loginBtn = findViewById(R.id.btn_login);
-
+/**
+ * Create Firebase project for this, connect accounts the continue user validation.
+ */
         loginBtn.setOnClickListener(v -> {
             if (email.getText().toString().isEmpty() || pass.getText().toString().isEmpty())
                 Toast.makeText(LoginActivity.this, "Please Complete All Fields", Toast.LENGTH_LONG).show();
