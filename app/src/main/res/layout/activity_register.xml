@@ -92,7 +92,7 @@
 
 
                 <EditText
-                    android:id="@+id/edit_Confirm_password"
+                    android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -111,7 +111,7 @@
 
 
                 <EditText
-                    android:id="@+id/edit_password"
+                    android:id="@+id/edit_Confirm_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
@@ -122,11 +122,34 @@
                     android:layout_height="20dp"/>
 
                 <Button
-                    android:id="@+id/btn_register"
+                    android:id="@+id/btn_signUp"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:text="Sign Up"
                     android:fontFamily="sans-serif-condensed-medium"
+                    android:textColor="@color/white"
+                    android:background="@drawable/register_button_shape"
+                    app:cornerRadius="32dp"
+/>
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="20dp"
+                    android:background="#ededed" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New User?"
+                    android:layout_marginBottom="10dp"
+                    android:alpha="0.7"/>
+
+                <Button
+                    android:id="@+id/btn_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:text="Register"
                     android:textColor="@color/white"
                     android:background="@drawable/signup_button_shape"
                     app:cornerRadius="32dp"
