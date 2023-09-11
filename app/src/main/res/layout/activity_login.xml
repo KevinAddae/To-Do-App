@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#6209D4">
+        android:background="#7D5BA6">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Welcome"
-                    android:textColor="#6209D4"
+                    android:textColor="#7D5BA6"
                     android:textSize="32sp"
                     android:textStyle="bold"/>
 
