@@ -47,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         pass = findViewById(R.id.edit_password);
 
         loginBtn = findViewById(R.id.btn_login);
+        registerBtn = findViewById(R.id.btn_register);
 
 /**
  * Create Firebase project for this, connect accounts the continue user validation.
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             else {
                 auth.signInWithEmailAndPassword(email.getText().toString(),pass.getText().toString()).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent i = new Intent(LoginActivity.this, MainMenu.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
                         finish();
@@ -67,7 +68,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        reg
+        registerBtn.setOnClickListener(v -> {
+            Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
+
+        });
     }
 
 }
