@@ -94,7 +94,6 @@
                     android:id="@+id/edit_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
                     android:drawableEnd="@drawable/account_circle_24"/>
 
                 <View
