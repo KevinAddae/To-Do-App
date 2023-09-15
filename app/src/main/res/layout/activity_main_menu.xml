@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainMenu"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="100dp">
 
         <View
             android:layout_width="wrap_content"
@@ -32,6 +35,8 @@
                 android:layout_marginLeft="10dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:textStyle="bold"
+                android:textColor="@color/black"
+                android:alpha="0.8"
                 android:textSize="50sp"/>
 
             <TextView
@@ -46,12 +51,34 @@
 
 
         </LinearLayout>
-
-
     </FrameLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal">
 
 
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/baseline_add_24"
+            android:background="@drawable/add_list_outline"
+            />
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add List"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            android:alpha="0.5"/>
+
+    </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
