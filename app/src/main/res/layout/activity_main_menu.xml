@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="100dp">
+        android:layout_marginTop="65dp">
 
         <View
             android:layout_width="wrap_content"
@@ -77,6 +77,7 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:textColor="@color/black"
             android:layout_marginTop="15dp"
+            android:textSize="18sp"
             android:alpha="0.5"/>
 
     </LinearLayout>
@@ -85,6 +86,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp" />
 
 </LinearLayout>

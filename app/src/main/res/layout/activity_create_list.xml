@@ -9,62 +9,70 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center">
+            android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/img_backArrow"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/baseline_arrow_back_24"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginRight="20dp"
+                android:src="@drawable/baseline_arrow_back_24" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create"
+                android:layout_marginStart="40dp"
                 android:layout_marginLeft="10dp"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:textStyle="bold"
-                android:textColor="@color/black"
                 android:alpha="0.8"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Create"
+                android:textColor="@color/black"
                 android:textSize="35sp"
-                android:layout_marginStart="40dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tasks"
                 android:layout_marginLeft="5dp"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="35sp"
                 android:layout_marginRight="10dp"
-                android:alpha="0.7"/>
+                android:alpha="0.7"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Tasks"
+                android:textSize="35sp" />
 
             <ImageView
+                android:id="@+id/img_addList"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:src="@drawable/baseline_add_24"
+                android:layout_marginLeft="50dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginLeft="50dp"/>
+                android:src="@drawable/baseline_add_24" />
 
         </LinearLayout>
+
         <View
             android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title"
             android:alpha="0.7"
-            android:textStyle="bold"/>
+            android:text="Title"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
         <EditText
             android:id="@+id/edit_title"
@@ -73,22 +81,24 @@
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Tasks"
             android:alpha="0.7"
-            android:textStyle="bold"/>
+            android:text="Add Tasks"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
         <View
             android:layout_width="wrap_content"
-            android:layout_height="20dp"/>
+            android:layout_height="20dp" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
