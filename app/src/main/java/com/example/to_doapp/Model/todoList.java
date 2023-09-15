@@ -6,20 +6,25 @@ import java.util.ArrayList;
 public class todoList implements Serializable {
 
     private String title;
-    private ArrayList<String> items;
+    private ArrayList<String> tasks;
+    private ArrayList<String> completeTasks;
     private Integer recyclerBgColour;
     private Integer textColour;
 
-    public todoList(String title, ArrayList<String> items, Integer recyclerBgColour, Integer textColour){
+    public todoList(String title, ArrayList<String> tasks, ArrayList<String> completeTasks,
+                    Integer recyclerBgColour, Integer textColour){
         this.title = title;
-        this.items = items;
+        this.tasks = tasks;
+        this.completeTasks = completeTasks;
         this.recyclerBgColour = recyclerBgColour;
         this.textColour = textColour;
     }
 
+
     public todoList(){
         title = "";
-        items = new ArrayList<>();
+        tasks = new ArrayList<>();
+        completeTasks = new ArrayList<>();
         recyclerBgColour = 0;
         textColour = 0;
     }
@@ -31,13 +36,20 @@ public class todoList implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public ArrayList<String> getItems() {
-        return items;
+    public ArrayList<String> getCompleteTasks() {
+        return completeTasks;
     }
 
-    public void setItems(ArrayList<String> items) {
-        this.items = items;
+    public void setCompleteTasks(ArrayList<String> completeTasks) {
+        this.completeTasks = completeTasks;
+    }
+
+    public ArrayList<String> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(ArrayList<String> tasks) {
+        this.tasks = tasks;
     }
 
     public Integer getRecyclerBgColour() {
