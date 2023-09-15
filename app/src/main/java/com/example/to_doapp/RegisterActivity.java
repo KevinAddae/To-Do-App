@@ -13,16 +13,20 @@ import android.widget.Toast;
 
 import com.example.to_doapp.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private User user;
+
     private Button registerBtn,loginBtn;
     private EditText email, password, username;
 
@@ -73,5 +77,24 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void sendUserInfo() {
+        String userID = auth.getCurrentUser().getUid();
+        DocumentReference documentReference = db.collection("users").document(userID);
+
+        HashMap<String, String> user = new HashMap<>();
+        user.put("id", userID);
+        user.put("username", username.getText().toString().trim());
+
+        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(RegisterActivity.this, "DocumentSnapshot added with ID: " + documentReference.getId(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Intent intent = new Intent(RegisterActivity.this, MainMenu.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+
     }
 }
