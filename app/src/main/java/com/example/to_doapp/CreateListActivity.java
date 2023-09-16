@@ -28,6 +28,7 @@ public class CreateListActivity extends AppCompatActivity {
     private ImageView arrowBack, addList;
     private TodoList todoList;
     private RecyclerView recyclerView;
+    private CreateListAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +45,15 @@ public class CreateListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         ArrayList<String> a = new ArrayList();
         a.add("I dunnk");
         todoList = new TodoList();
         todoList.setTasks(a);
 
-        recyclerView.setAdapter(new CreateListAdapter(getApplicationContext(),todoList.getTasks()));
+        adapter = new CreateListAdapter(getApplicationContext(),todoList.getTasks());
+
+        recyclerView.setAdapter(adapter);
 
 
 
@@ -82,6 +86,7 @@ public class CreateListActivity extends AppCompatActivity {
 
         acceptBtn.setOnClickListener(v -> {
             todoList.getTasks().add(editAddItem.getText().toString());
+            adapter.notifyItemInserted(todoList.getTasks().size()-1);
             dialog.dismiss();
         });
         dialog.show();
