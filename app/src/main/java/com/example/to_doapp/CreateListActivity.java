@@ -1,6 +1,8 @@
 package com.example.to_doapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -14,11 +16,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.to_doapp.Adapter.CreateListAdapter;
+import com.example.to_doapp.Model.TodoList;
+
+import java.util.ArrayList;
+
 public class CreateListActivity extends AppCompatActivity {
 
     private EditText title;
     private Button addItemBtn;
     private ImageView arrowBack, addList;
+    private TodoList todoList;
+    private RecyclerView recyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +41,17 @@ public class CreateListActivity extends AppCompatActivity {
 
         arrowBack = findViewById(R.id.img_backArrow);
         addList = findViewById(R.id.img_addList);
+        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ArrayList<String> a = new ArrayList();
+        a.add("I dunnk");
+        todoList = new TodoList();
+        todoList.setTasks(a);
+
+        recyclerView.setAdapter(new CreateListAdapter(getApplicationContext(),todoList.getTasks()));
+
+
 
         arrowBack.setOnClickListener(v -> {
             Intent i = new Intent(CreateListActivity.this, MainMenu.class);
@@ -43,6 +63,7 @@ public class CreateListActivity extends AppCompatActivity {
         addItemBtn.setOnClickListener(v -> {
             showAddItemDialog();
         });
+
     }
 
     private void showAddItemDialog() {
@@ -59,6 +80,10 @@ public class CreateListActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
+        acceptBtn.setOnClickListener(v -> {
+            todoList.getTasks().add(editAddItem.getText().toString());
+            dialog.dismiss();
+        });
         dialog.show();
 
     }
