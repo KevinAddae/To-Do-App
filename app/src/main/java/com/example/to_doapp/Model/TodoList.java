@@ -3,30 +3,23 @@ package com.example.to_doapp.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class todoList implements Serializable {
+public class TodoList implements Serializable {
 
     private String title;
     private ArrayList<String> tasks;
     private ArrayList<String> completeTasks;
-    private Integer recyclerBgColour;
-    private Integer textColour;
 
-    public todoList(String title, ArrayList<String> tasks, ArrayList<String> completeTasks,
-                    Integer recyclerBgColour, Integer textColour){
+    public TodoList(String title, ArrayList<String> tasks, ArrayList<String> completeTasks){
         this.title = title;
         this.tasks = tasks;
         this.completeTasks = completeTasks;
-        this.recyclerBgColour = recyclerBgColour;
-        this.textColour = textColour;
     }
 
 
-    public todoList(){
+    public TodoList(){
         title = "";
         tasks = new ArrayList<>();
         completeTasks = new ArrayList<>();
-        recyclerBgColour = 0;
-        textColour = 0;
     }
 
     public String getTitle() {
@@ -52,20 +45,5 @@ public class todoList implements Serializable {
         this.tasks = tasks;
     }
 
-    public Integer getRecyclerBgColour() {
-        return recyclerBgColour;
-    }
-
-    public void setRecyclerBgColour(Integer recyclerBgColour) {
-        this.recyclerBgColour = recyclerBgColour;
-    }
-
-    public Integer getTextColour() {
-        return textColour;
-    }
-
-    public void setTextColour(Integer textColour) {
-        this.textColour = textColour;
-    }
 }
 
