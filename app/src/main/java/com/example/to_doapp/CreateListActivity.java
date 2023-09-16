@@ -2,9 +2,13 @@ package com.example.to_doapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +39,27 @@ public class CreateListActivity extends AppCompatActivity {
             startActivity(i);
             finish();
         });
+
+        addItemBtn.setOnClickListener(v -> {
+            showAddItemDialog();
+        });
+    }
+
+    private void showAddItemDialog() {
+        Dialog dialog = new Dialog(CreateListActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        setContentView(R.layout.add_item_dialog);
+
+        final EditText editAddItem = findViewById(R.id.edit_addItem);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})  Button cancelBtn = findViewById(R.id.btn_cancel);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})  Button acceptBtn = findViewById(R.id.btn_accept);
+
+        cancelBtn.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+
+        dialog.show();
 
     }
 }
