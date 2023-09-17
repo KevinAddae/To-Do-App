@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.to_doapp.Adapter.CreateListAdapter;
 import com.example.to_doapp.Model.TodoList;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 public class CreateListActivity extends AppCompatActivity {
 
-    private EditText title;
+    private EditText title, editAddItem;
     private Button addItemBtn;
     private ImageView arrowBack, addList;
     private TodoList todoList;
@@ -43,6 +44,7 @@ public class CreateListActivity extends AppCompatActivity {
         arrowBack = findViewById(R.id.img_backArrow);
         addList = findViewById(R.id.img_addList);
         recyclerView = findViewById(R.id.recyclerView);
+        editAddItem = findViewById(R.id.edit_addItem);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -65,31 +67,10 @@ public class CreateListActivity extends AppCompatActivity {
         });
 
         addItemBtn.setOnClickListener(v -> {
-            showAddItemDialog();
-        });
-
-    }
-
-    private void showAddItemDialog() {
-        Dialog dialog = new Dialog(CreateListActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        setContentView(R.layout.add_item_dialog);
-
-        final EditText editAddItem = findViewById(R.id.edit_addItem);
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})  Button cancelBtn = findViewById(R.id.btn_cancel);
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"})  Button acceptBtn = findViewById(R.id.btn_accept);
-
-        cancelBtn.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
-
-        acceptBtn.setOnClickListener(v -> {
             todoList.getTasks().add(editAddItem.getText().toString());
+            Toast.makeText(this, todoList.getTasks().size() + "", Toast.LENGTH_SHORT).show();
             adapter.notifyItemInserted(todoList.getTasks().size()-1);
-            dialog.dismiss();
         });
-        dialog.show();
 
     }
 }
