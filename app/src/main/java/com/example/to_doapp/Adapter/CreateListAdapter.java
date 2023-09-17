@@ -30,6 +30,10 @@ public class CreateListAdapter extends RecyclerView.Adapter<CreateTaskViewHolder
     @Override
     public void onBindViewHolder(@NonNull CreateTaskViewHolder holder, int position) {
         holder.txtTask.setText(items.get(position));
+        holder.itemView.findViewById(R.id.deleteBtn).setOnClickListener(v -> {
+            items.remove(position);
+            notifyItemRemoved(position);
+        });
     }
 
     @Override
