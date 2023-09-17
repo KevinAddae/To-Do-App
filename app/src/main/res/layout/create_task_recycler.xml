@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <LinearLayout
@@ -18,7 +18,8 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/bullet"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="4dp"/>/
+                android:layout_marginTop="4dp"/>
+
             <TextView
                 android:id="@+id/txt_task"
                 android:layout_width="wrap_content"
@@ -27,7 +28,9 @@
                 android:textSize="20sp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"/>
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"/>
+
 
         </LinearLayout>
         <View
@@ -35,4 +38,15 @@
             android:layout_height="10dp"/>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/deleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:background="#83D0E2"
+        android:text="Delete"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:textAllCaps="false"
+        />
 </RelativeLayout>
