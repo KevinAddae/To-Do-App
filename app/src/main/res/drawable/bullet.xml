@@ -5,7 +5,7 @@
 
     <!--set color of the bullet-->
     <solid
-        android:color="#666666"/>
+        android:color="@color/black"/>
 
     <!--set size of the bullet-->
     <size
