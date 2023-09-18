@@ -19,8 +19,13 @@ import android.widget.Toast;
 
 import com.example.to_doapp.Adapter.CreateListAdapter;
 import com.example.to_doapp.Model.TodoList;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreateListActivity extends AppCompatActivity {
 
@@ -30,6 +35,9 @@ public class CreateListActivity extends AppCompatActivity {
     private TodoList todoList;
     private RecyclerView recyclerView;
     private CreateListAdapter adapter;
+    private FirebaseUser fUser;
+    private FirebaseFirestore db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +56,14 @@ public class CreateListActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArrayList<String> a = new ArrayList();
-        a.add("I dunnk");
         todoList = new TodoList();
-        todoList.setTasks(a);
 
         adapter = new CreateListAdapter(getApplicationContext(),todoList.getTasks());
 
         recyclerView.setAdapter(adapter);
 
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
 
 
         arrowBack.setOnClickListener(v -> {
@@ -70,6 +77,23 @@ public class CreateListActivity extends AppCompatActivity {
             todoList.getTasks().add(editAddItem.getText().toString());
             Toast.makeText(this, todoList.getTasks().size() + "", Toast.LENGTH_SHORT).show();
             adapter.notifyItemInserted(todoList.getTasks().size()-1);
+        });
+
+        addList.setOnClickListener(v -> {
+            todoList.getTasks().forEach(task -> {
+                DocumentReference reference = db.collection("taskLists").document();
+                HashMap<String, Object> hashMap = new HashMap<>();
+
+                hashMap.put("userId", fUser.getUid());
+                hashMap.put("task", task);
+                reference.set(hashMap);
+
+                Intent i = new Intent(CreateListActivity.this, MainMenu.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
+
+            });
         });
 
     }
