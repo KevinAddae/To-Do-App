@@ -108,22 +108,26 @@ public class CreateListActivity extends AppCompatActivity {
         });
 
         addList.setOnClickListener(v -> {
+            if (title.getText().equals(""))
+                Toast.makeText(this, "Please select a title", Toast.LENGTH_SHORT).show();
+            else if (todoList.getTasks().isEmpty())
+                Toast.makeText(this, "Make sure you have added tasks", Toast.LENGTH_SHORT).show();
+            else {
+                todoList.getTasks().forEach(task -> {
+                    DocumentReference reference = db.collection("taskLists").document();
+                    HashMap<String, Object> hashMap = new HashMap<>();
 
-            todoList.getTasks().forEach(task -> {
-                DocumentReference reference = db.collection("taskLists").document();
-                HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("userId", fUser.getUid());
+                    hashMap.put("title", title.getText().toString());
+                    hashMap.put("task", task);
+                    reference.set(hashMap);
 
-                hashMap.put("userId", fUser.getUid());
-                hashMap.put("title", title.getText().toString());
-                hashMap.put("task", task);
-                reference.set(hashMap);
-
-                Intent i = new Intent(CreateListActivity.this, MainMenu.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(i);
-                finish();
-
-            });
+                    Intent i = new Intent(CreateListActivity.this, MainMenu.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    finish();
+                });
+            }
         });
 
     }
