@@ -8,6 +8,9 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.to_doapp.Adapter.CreateListAdapter;
@@ -30,6 +34,7 @@ import java.util.HashMap;
 public class CreateListActivity extends AppCompatActivity {
 
     private EditText title, editAddItem;
+    private TextView editRecyclerTitle;
     private Button addItemBtn;
     private ImageView arrowBack, addList;
     private TodoList todoList;
@@ -62,10 +67,33 @@ public class CreateListActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+        editRecyclerTitle = findViewById(R.id.txt_title_recyclerView);
+
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
 
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (editRecyclerTitle.getText().equals(""))
+                    editRecyclerTitle.setText("Title");
+                else {
+                    editRecyclerTitle.setText("");
+                    editRecyclerTitle.setText(s);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         arrowBack.setOnClickListener(v -> {
             Intent i = new Intent(CreateListActivity.this, MainMenu.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -80,11 +108,13 @@ public class CreateListActivity extends AppCompatActivity {
         });
 
         addList.setOnClickListener(v -> {
+
             todoList.getTasks().forEach(task -> {
                 DocumentReference reference = db.collection("taskLists").document();
                 HashMap<String, Object> hashMap = new HashMap<>();
 
                 hashMap.put("userId", fUser.getUid());
+                hashMap.put("title", title.getText().toString());
                 hashMap.put("task", task);
                 reference.set(hashMap);
 
