@@ -8,11 +8,13 @@ public class TodoList implements Serializable {
     private String title;
     private ArrayList<String> tasks;
     private ArrayList<String> completeTasks;
+    private String userID;
 
-    public TodoList(String title, ArrayList<String> tasks, ArrayList<String> completeTasks){
+    public TodoList(String title, ArrayList<String> tasks, ArrayList<String> completeTasks, String userID){
         this.title = title;
         this.tasks = tasks;
         this.completeTasks = completeTasks;
+        this.userID = userID;
     }
 
 
@@ -20,6 +22,7 @@ public class TodoList implements Serializable {
         title = "";
         tasks = new ArrayList<>();
         completeTasks = new ArrayList<>();
+        userID = "";
     }
 
     public String getTitle() {
