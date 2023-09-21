@@ -22,7 +22,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:padding="10dp"
-                />
+                android:id="@+id/rv_title"/>
 
             <View
                 android:layout_width="match_parent"
