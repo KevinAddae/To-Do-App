@@ -34,7 +34,7 @@ public class ParentViewListAdapter extends RecyclerView.Adapter<ParentViewListVi
     public void onBindViewHolder(@NonNull ParentViewListViewHolder holder, int position) {
         holder.title.setText(items.get(position).getTitle());
 
-        ChildViewListAdapter childAdapter = new ChildViewListAdapter(context, items.get(position).getTasks());
+        ChildViewListAdapter childAdapter = new ChildViewListAdapter(context, items.get(position).getTaskItems());
         holder.rv_child.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false));
         holder.rv_child.setAdapter(childAdapter);
         childAdapter.notifyDataSetChanged();

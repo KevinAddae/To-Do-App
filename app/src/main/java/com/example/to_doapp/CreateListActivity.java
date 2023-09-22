@@ -61,9 +61,9 @@ public class CreateListActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        todoList = new TodoList();
+        ArrayList<String> list = new ArrayList<>();
 
-        adapter = new CreateListAdapter(getApplicationContext(),todoList.getTasks());
+        adapter = new CreateListAdapter(getApplicationContext(),list);
 
         recyclerView.setAdapter(adapter);
 
@@ -102,24 +102,26 @@ public class CreateListActivity extends AppCompatActivity {
         });
 
         addItemBtn.setOnClickListener(v -> {
-            todoList.getTasks().add(editAddItem.getText().toString());
-            Toast.makeText(this, todoList.getTasks().size() + "", Toast.LENGTH_SHORT).show();
-            adapter.notifyItemInserted(todoList.getTasks().size()-1);
+            list.add(editAddItem.getText().toString());
+            Toast.makeText(this, list.size() + "", Toast.LENGTH_SHORT).show();
+            adapter.notifyItemInserted(list.size()-1);
+            editAddItem.setText("");
         });
 
         addList.setOnClickListener(v -> {
             if (title.getText().equals(""))
                 Toast.makeText(this, "Please select a title", Toast.LENGTH_SHORT).show();
-            else if (todoList.getTasks().isEmpty())
+            else if (list.isEmpty())
                 Toast.makeText(this, "Make sure you have added tasks", Toast.LENGTH_SHORT).show();
             else {
-                todoList.getTasks().forEach(task -> {
+                list.forEach(task -> {
                     DocumentReference reference = db.collection("taskLists").document();
                     HashMap<String, Object> hashMap = new HashMap<>();
 
                     hashMap.put("userId", fUser.getUid());
                     hashMap.put("title", title.getText().toString());
                     hashMap.put("task", task);
+                    hashMap.put("completedTask","false");
                     reference.set(hashMap);
 
                     Intent i = new Intent(CreateListActivity.this, MainMenu.class);
