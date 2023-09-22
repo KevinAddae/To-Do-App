@@ -6,25 +6,25 @@ import java.util.ArrayList;
 public class TodoList implements Serializable {
 
     private String title;
-    private ArrayList<String> tasks;
-    private ArrayList<String> completeTasks;
+    private ArrayList<TodoItem> TodoItems;
     private String userID;
 
-    public TodoList(String title, ArrayList<String> tasks, ArrayList<String> completeTasks, String userID){
+    public TodoList(String title, ArrayList<TodoItem> TodoItems, String userID){
         this.title = title;
-        this.tasks = tasks;
-        this.completeTasks = completeTasks;
+        this.TodoItems = TodoItems;
         this.userID = userID;
     }
 
 
     public TodoList(){
         title = "";
-        tasks = new ArrayList<>();
-        completeTasks = new ArrayList<>();
+        TodoItems = new ArrayList<>();
         userID = "";
     }
 
+    public TodoList(String title, ArrayList<TodoItem> tasks){
+
+    }
     public String getTitle() {
         return title;
     }
@@ -32,20 +32,22 @@ public class TodoList implements Serializable {
     public void setTitle(String title) {
         this.title = title;
     }
-    public ArrayList<String> getCompleteTasks() {
-        return completeTasks;
+
+
+    public ArrayList<TodoItem> getTasks() {
+        return TodoItems;
     }
 
-    public void setCompleteTasks(ArrayList<String> completeTasks) {
-        this.completeTasks = completeTasks;
+    public ArrayList<String> getTaskItems() {
+        ArrayList<String> strItems = new ArrayList<>();
+
+        TodoItems.forEach(TodoItem ->
+                strItems.add(TodoItem.getItem()));
+        return strItems;
     }
 
-    public ArrayList<String> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(ArrayList<String> tasks) {
-        this.tasks = tasks;
+    public void setTasks(ArrayList<TodoItem> TodoItems) {
+        this.TodoItems = TodoItems;
     }
 
 }
