@@ -88,6 +88,8 @@ public class MainMenu extends AppCompatActivity implements SelectListener {
 
     @Override
     public void onItemClicked(TodoList list) {
-
+        Intent i = new Intent(MainMenu.this, ViewListActivity.class);
+        i.putExtra("list",list);
+        startActivity(i);
     }
 }
