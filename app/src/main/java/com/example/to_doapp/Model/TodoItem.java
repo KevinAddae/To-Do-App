@@ -1,6 +1,8 @@
 package com.example.to_doapp.Model;
 
-public class TodoItem {
+import java.io.Serializable;
+
+public class TodoItem implements Serializable {
 
     private String item;
     private boolean complete;
