@@ -1,8 +1,11 @@
 package com.example.to_doapp.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,10 +21,11 @@ public class ParentViewListAdapter extends RecyclerView.Adapter<ParentViewListVi
 
     Context context;
     List<TodoList> items;
-
-    public ParentViewListAdapter(Context context, List<TodoList> items) {
+    SelectListener listener;
+    public ParentViewListAdapter(Context context, List<TodoList> items, SelectListener listener) {
         this.context = context;
         this.items = items;
+        this.listener = listener;
     }
 
     @NonNull
@@ -31,8 +35,9 @@ public class ParentViewListAdapter extends RecyclerView.Adapter<ParentViewListVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ParentViewListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ParentViewListViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.title.setText(items.get(position).getTitle());
+        holder.container.setOnClickListener(v -> listener.onItemClicked(items.get(position)));
 
         ChildViewListAdapter childAdapter = new ChildViewListAdapter(context, items.get(position).getTaskItems());
         holder.rv_child.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false));
