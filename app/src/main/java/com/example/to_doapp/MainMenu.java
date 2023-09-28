@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.to_doapp.Adapter.ParentViewListAdapter;
+import com.example.to_doapp.Adapter.SelectListener;
 import com.example.to_doapp.Model.TodoList;
 import com.example.to_doapp.Model.TodoItem;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,7 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class MainMenu extends AppCompatActivity {
+public class MainMenu extends AppCompatActivity implements SelectListener {
 
     private ImageView addList;
     private RecyclerView recyclerView;
@@ -69,7 +70,7 @@ public class MainMenu extends AppCompatActivity {
                 a.setTitle("Test");
                 todoLists.add(a);
                 Toast.makeText(this, todoLists.size() + "", Toast.LENGTH_SHORT).show();
-                ParentViewListAdapter adapter = new ParentViewListAdapter(MainMenu.this,todoLists);
+                ParentViewListAdapter adapter = new ParentViewListAdapter(MainMenu.this,todoLists,this);
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainMenu.this,LinearLayoutManager.HORIZONTAL,false));
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
@@ -82,6 +83,11 @@ public class MainMenu extends AppCompatActivity {
             startActivity(i);
             finish();
         });
+
+    }
+
+    @Override
+    public void onItemClicked(TodoList list) {
 
     }
 }
