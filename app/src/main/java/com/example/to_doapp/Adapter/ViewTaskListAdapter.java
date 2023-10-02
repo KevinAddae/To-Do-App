@@ -44,7 +44,7 @@ public class ViewTaskListAdapter extends RecyclerView.Adapter<ViewTaskListViewHo
             holder.txtStatus.setTextColor(Color.parseColor("#E6221F"));
         }
 
-        holder.container.setOnClickListener(v -> listener.onItemClicked(items.get(position).getItem()));
+        holder.container.setOnClickListener(v -> listener.onItemClicked(items.get(position)));
     }
 
     @Override
