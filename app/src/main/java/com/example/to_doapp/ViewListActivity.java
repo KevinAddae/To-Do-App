@@ -12,10 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.to_doapp.Adapter.SelectItemListener;
 import com.example.to_doapp.Adapter.ViewTaskListAdapter;
 import com.example.to_doapp.Model.TodoList;
 
-public class ViewListActivity extends AppCompatActivity {
+public class ViewListActivity extends AppCompatActivity implements SelectItemListener {
 
     TodoList todoList;
     RecyclerView recyclerView;
@@ -40,7 +41,7 @@ public class ViewListActivity extends AppCompatActivity {
         title.setText(todoList.getTitle());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ViewListActivity.this,LinearLayoutManager.VERTICAL,false));
-        adapter = new ViewTaskListAdapter(getApplicationContext(),todoList.getTasks());
+        adapter = new ViewTaskListAdapter(getApplicationContext(),todoList.getTasks(),ViewListActivity.this);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -55,4 +56,8 @@ public class ViewListActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onItemClicked(String item) {
+
+    }
 }
