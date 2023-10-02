@@ -71,7 +71,7 @@ public class MainMenu extends AppCompatActivity implements SelectListener {
                 todoLists.add(a);
                 Toast.makeText(this, todoLists.size() + "", Toast.LENGTH_SHORT).show();
                 ParentViewListAdapter adapter = new ParentViewListAdapter(MainMenu.this,todoLists,this);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MainMenu.this,LinearLayoutManager.HORIZONTAL,false));
+                recyclerView.setLayoutManager(new LinearLayoutManager(  MainMenu.this,LinearLayoutManager.HORIZONTAL,false));
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }));
