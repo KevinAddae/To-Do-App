@@ -1,28 +1,37 @@
 package com.example.to_doapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.to_doapp.Adapter.SelectItemListener;
 import com.example.to_doapp.Adapter.ViewTaskListAdapter;
+import com.example.to_doapp.Model.TodoItem;
 import com.example.to_doapp.Model.TodoList;
 
-public class ViewListActivity extends AppCompatActivity implements SelectItemListener {
+public class ViewListActivity extends AppCompatActivity implements SelectItemListener, CustomDialog.DialogListener {
 
     TodoList todoList;
     RecyclerView recyclerView;
     TextView title;
     ViewTaskListAdapter adapter;
-
+    TodoItem todoItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +41,12 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
 
         recyclerView = findViewById(R.id.recyclerView);
         title = findViewById(R.id.txt_title);
+        todoItem = new TodoItem();
 
 
         Bundle extras = getIntent().getExtras();
         if (extras != null)
             todoList = (TodoList) extras.getSerializable("list");
-        Toast.makeText(this, todoList.getTitle(), Toast.LENGTH_SHORT).show();
         title.setText(todoList.getTitle());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ViewListActivity.this,LinearLayoutManager.VERTICAL,false));
@@ -57,7 +66,17 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
     }
 
     @Override
-    public void onItemClicked(String item) {
+    public void onItemClicked(TodoItem item) {
+        Toast.makeText(this, "You tapped "+ item.getItem(), Toast.LENGTH_SHORT).show();
+        CustomDialog dialog = new CustomDialog();
+        dialog.show(getSupportFragmentManager(),"custom dialog");
+        todoItem = item;
+    }
 
+    @Override
+    public void applyText(String task,Boolean status) {
+        todoList.getTasks().set(todoList.getTasks().indexOf(todoItem),new TodoItem(task,status));
+        adapter.notifyDataSetChanged();
     }
 }
+
