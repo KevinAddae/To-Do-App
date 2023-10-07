@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.to_doapp.Adapter.ParentViewListAdapter;
 import com.example.to_doapp.Adapter.SelectListener;
@@ -67,7 +66,6 @@ public class MainMenu extends AppCompatActivity implements SelectListener {
                 tasks = new ArrayList<>();
 
 
-                Toast.makeText(this, todoLists.size() + "", Toast.LENGTH_SHORT).show();
                 ParentViewListAdapter adapter = new ParentViewListAdapter(MainMenu.this,todoLists,this);
                 recyclerView.setLayoutManager(new LinearLayoutManager(  MainMenu.this,LinearLayoutManager.HORIZONTAL,false));
                 recyclerView.setAdapter(adapter);
