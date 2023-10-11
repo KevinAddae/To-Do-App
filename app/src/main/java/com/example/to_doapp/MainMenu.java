@@ -50,28 +50,27 @@ public class MainMenu extends AppCompatActivity implements SelectListener {
         titles = new ArrayList<>();
 
         db.collection("taskLists").get().addOnCompleteListener(task1 -> {
-            for(QueryDocumentSnapshot document: task1.getResult()){
-                titles.add(document.get("title").toString());
-                Log.e("MainMenu",titles.get(0) + "");
-            }
-            titles.stream().distinct().forEach(title -> db.collection("taskLists").whereEqualTo("title",title).get().addOnCompleteListener(task -> {
-                String id = "";
-                for (QueryDocumentSnapshot document: task.getResult()){
-                    if (task.isSuccessful())
-                        tasks.add(new TodoItem(document.get("task").toString(),Boolean.parseBoolean(document.get("completedTask").toString())));
-                    id = document.get("userId").toString();
+            if(task1.getResult() != null) {
+                for (QueryDocumentSnapshot document : task1.getResult()) {
+                    titles.add(document.get("title").toString());
+                    Log.e("MainMenu", titles.get(0) + "");
                 }
-                Log.e("MainMenu", "" + tasks.size());
-                todoLists.add(new TodoList(title, tasks, id));
-                tasks = new ArrayList<>();
+                titles.stream().distinct().forEach(title -> db.collection("taskLists").whereEqualTo("title", title).get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (task.isSuccessful())
+                            tasks.add(new TodoItem(document.get("task").toString(), Boolean.parseBoolean(document.get("completedTask").toString())));
+                    }
+                    Log.e("MainMenu", "" + tasks.size());
+                    todoLists.add(new TodoList(title, tasks));
+                    tasks = new ArrayList<>();
 
 
-                ParentViewListAdapter adapter = new ParentViewListAdapter(MainMenu.this,todoLists,this);
-                recyclerView.setLayoutManager(new LinearLayoutManager(  MainMenu.this,LinearLayoutManager.HORIZONTAL,false));
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-            }));
-
+                    ParentViewListAdapter adapter = new ParentViewListAdapter(MainMenu.this, todoLists, this);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(MainMenu.this, LinearLayoutManager.HORIZONTAL, false));
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }));
+            }
         });
         addList.setOnClickListener(v -> {
             Intent i = new Intent(MainMenu.this, CreateListActivity.class);

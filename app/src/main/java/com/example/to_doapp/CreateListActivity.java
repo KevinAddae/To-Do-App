@@ -118,7 +118,6 @@ public class CreateListActivity extends AppCompatActivity {
                     DocumentReference reference = db.collection("taskLists").document();
                     HashMap<String, Object> hashMap = new HashMap<>();
 
-                    hashMap.put("userId", fUser.getUid());
                     hashMap.put("title", title.getText().toString());
                     hashMap.put("task", task);
                     hashMap.put("completedTask","false");

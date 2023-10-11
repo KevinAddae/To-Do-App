@@ -7,24 +7,18 @@ public class TodoList implements Serializable {
 
     private String title;
     private ArrayList<TodoItem> TodoItems;
-    private String userID;
 
-    public TodoList(String title, ArrayList<TodoItem> TodoItems, String userID){
+    public TodoList(String title, ArrayList<TodoItem> TodoItems){
         this.title = title;
         this.TodoItems = TodoItems;
-        this.userID = userID;
     }
 
 
     public TodoList(){
         title = "";
         TodoItems = new ArrayList<>();
-        userID = "";
     }
 
-    public TodoList(String title, ArrayList<TodoItem> tasks){
-
-    }
     public String getTitle() {
         return title;
     }
