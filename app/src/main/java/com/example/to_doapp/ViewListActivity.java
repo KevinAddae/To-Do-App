@@ -1,5 +1,6 @@
 package com.example.to_doapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +20,15 @@ import com.example.to_doapp.Adapter.SelectItemListener;
 import com.example.to_doapp.Adapter.ViewTaskListAdapter;
 import com.example.to_doapp.Model.TodoItem;
 import com.example.to_doapp.Model.TodoList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 public class ViewListActivity extends AppCompatActivity implements SelectItemListener, CustomDialog.DialogListener {
 
@@ -31,6 +41,8 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
     EditText editAddTask;
     Button Taskbtn;
     CheckBox cbStatus;
+    ArrayList<String> docIds;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +58,10 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         editAddTask = findViewById(R.id.edit_addItem);
         Taskbtn = findViewById(R.id.btn_addItem);
         cbStatus = findViewById(R.id.cb_taskStatus);
-
+        db = FirebaseFirestore.getInstance();
 
         todoItem = new TodoItem();
+        docIds = new ArrayList<>();
 
 
         Bundle extras = getIntent().getExtras();
@@ -61,7 +74,6 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        ImageView imgBackArrow = findViewById(R.id.img_backArrow);
         imgBackArrow.setOnClickListener(v -> {
             Intent i = new Intent(ViewListActivity.this, MainMenu.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -69,6 +81,33 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
             finish();
         });
 
+        imgUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollectionReference todoListRef = db.collection("tasklists");
+
+                todoListRef.whereEqualTo("title",todoList.getTitle()).get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for(QueryDocumentSnapshot document: task.getResult()){
+                                    docIds.add(document.getId());
+                                }
+                            }
+                        });
+                docIds.forEach(id -> {
+                    db.collection("taskLists").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                                Toast.makeText(ViewListActivity.this, "Successfully removed docs", Toast.LENGTH_SHORT).show();
+                            else
+                                Toast.makeText(ViewListActivity.this, "Something went wrong deleting", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                });
+            }
+        });
     Taskbtn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
