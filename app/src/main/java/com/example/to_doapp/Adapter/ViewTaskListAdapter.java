@@ -1,8 +1,10 @@
 package com.example.to_doapp.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -34,7 +36,12 @@ public class ViewTaskListAdapter extends RecyclerView.Adapter<ViewTaskListViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewTaskListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewTaskListViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.itemView.findViewById(R.id.img_delete).setOnClickListener(v -> {
+            items.remove(position);
+            notifyItemRemoved(position);
+        });
+
         holder.txtTask.setText(items.get(position).getItem());
         if(items.get(position).isComplete()){
             holder.txtStatus.setText("Completed");
@@ -45,6 +52,7 @@ public class ViewTaskListAdapter extends RecyclerView.Adapter<ViewTaskListViewHo
         }
 
         holder.container.setOnClickListener(v -> listener.onItemClicked(items.get(position)));
+
     }
 
     @Override
