@@ -1,21 +1,15 @@
 package com.example.to_doapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,6 +28,9 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
     ViewTaskListAdapter adapter;
     TodoItem todoItem;
     ImageView imgBackArrow,imgUpdate;
+    EditText editAddTask;
+    Button Taskbtn;
+    CheckBox cbStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +43,10 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         title = findViewById(R.id.txt_title);
         imgBackArrow = findViewById(R.id.img_backArrow);
         imgUpdate = findViewById(R.id.img_updateList);
+        editAddTask = findViewById(R.id.edit_addItem);
+        Taskbtn = findViewById(R.id.btn_addItem);
+        cbStatus = findViewById(R.id.cb_taskStatus);
+
 
         todoItem = new TodoItem();
 
@@ -68,7 +69,18 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
             finish();
         });
 
+    Taskbtn.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (editAddTask.getText().toString().isEmpty())
+                Toast.makeText(ViewListActivity.this, "Field is still empty", Toast.LENGTH_SHORT).show();
+            TodoItem newTask = new TodoItem(editAddTask.getText().toString(), cbStatus.isChecked());
+            todoList.getTasks().add(newTask);
+            adapter.notifyItemInserted(todoList.getTasks().indexOf(newTask));
+            editAddTask.setText("");
 
+        }
+    });
     }
 
     @Override
