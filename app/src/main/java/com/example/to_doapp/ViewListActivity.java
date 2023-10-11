@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -22,12 +23,9 @@ import com.example.to_doapp.Model.TodoItem;
 import com.example.to_doapp.Model.TodoList;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +39,7 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
     TodoItem todoItem;
     ImageView imgBackArrow,imgUpdate;
     EditText editAddTask;
-    Button Taskbtn;
+    Button taskBtn;
     CheckBox cbStatus;
     ArrayList<String> docIds;
     private FirebaseFirestore db;
@@ -59,7 +57,7 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         imgBackArrow = findViewById(R.id.img_backArrow);
         imgUpdate = findViewById(R.id.img_updateList);
         editAddTask = findViewById(R.id.edit_addItem);
-        Taskbtn = findViewById(R.id.btn_addItem);
+        taskBtn = findViewById(R.id.btn_addItem);
         cbStatus = findViewById(R.id.cb_taskStatus);
         db = FirebaseFirestore.getInstance();
 
@@ -77,63 +75,73 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        imgBackArrow.setOnClickListener(v -> {
+
+        editAddTask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE))
+                        performClick();
+                    return false;
+                }
+        });
+
+        imgBackArrow.setOnClickListener(x -> {
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             finish();
         });
 
-        imgUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CollectionReference todoListRef = db.collection("taskLists");
+        performClick();
+        imgUpdate.setOnClickListener(v -> {
+            CollectionReference todoListRef = db.collection("taskLists");
 
-                todoListRef.whereEqualTo("title",todoList.getTitle()).get()
-                        .addOnCompleteListener(task -> {
-                            for(QueryDocumentSnapshot document: task.getResult()){
-                                docIds.add(document.getId());
-                            }
-                            docIds.forEach(id -> {
-                                db.collection("taskLists").document(id).delete().addOnCompleteListener(taskDoc -> {
-                                    if (task.isSuccessful())
-                                        Toast.makeText(ViewListActivity.this, "Successfully removed docs", Toast.LENGTH_SHORT).show();
-                                    else
-                                        Toast.makeText(ViewListActivity.this, "Something went wrong deleting", Toast.LENGTH_SHORT).show();
-                                });
-                            });
-
-                            HashMap<String, String> item = new HashMap<>();
-
-                            todoList.getTasks().forEach(data ->{
-                                item.put("title", todoList.getTitle());
-                                item.put("task", data.getItem());
-                                item.put("completedTask",Boolean.toString(data.isComplete()));
-                                todoListRef.document().set(item).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()) {
-                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(i);
-                                            finish();
-                                        } else
-                                            Toast.makeText(ViewListActivity.this, "Something went wrong adding", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                                item.clear();
+            todoListRef.whereEqualTo("title",todoList.getTitle()).get()
+                    .addOnCompleteListener(task -> {
+                        for(QueryDocumentSnapshot document: task.getResult()){
+                            docIds.add(document.getId());
+                        }
+                        docIds.forEach(id -> {
+                            db.collection("taskLists").document(id).delete().addOnCompleteListener(taskDoc -> {
+                                if (task.isSuccessful())
+                                    Toast.makeText(ViewListActivity.this, "Successfully removed docs", Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(ViewListActivity.this, "Something went wrong deleting", Toast.LENGTH_SHORT).show();
                             });
                         });
 
-            }
-        });
-    Taskbtn.setOnClickListener(v -> {
-        if (editAddTask.getText().toString().isEmpty())
-            Toast.makeText(ViewListActivity.this, "Field is still empty", Toast.LENGTH_SHORT).show();
-        TodoItem newTask = new TodoItem(editAddTask.getText().toString(), cbStatus.isChecked());
-        todoList.getTasks().add(newTask);
-        adapter.notifyItemInserted(todoList.getTasks().indexOf(newTask));
-        editAddTask.setText("");
+                        HashMap<String, String> item = new HashMap<>();
 
-    });
+                        todoList.getTasks().forEach(data ->{
+                            item.put("title", todoList.getTitle());
+                            item.put("task", data.getItem());
+                            item.put("completedTask",Boolean.toString(data.isComplete()));
+                            todoListRef.document().set(item).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(i);
+                                        finish();
+                                    } else
+                                        Toast.makeText(ViewListActivity.this, "Something went wrong adding", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            item.clear();
+                        });
+                    });
+        });
+    }
+
+    public void performClick(){
+        taskBtn.setOnClickListener(v -> {
+            if (editAddTask.getText().toString().isEmpty())
+                Toast.makeText(ViewListActivity.this, "Field is still empty", Toast.LENGTH_SHORT).show();
+            TodoItem newTask = new TodoItem(editAddTask.getText().toString(), cbStatus.isChecked());
+            todoList.getTasks().add(newTask);
+            adapter.notifyItemInserted(todoList.getTasks().indexOf(newTask));
+            editAddTask.setText("");
+
+        });
     }
 
     @Override
