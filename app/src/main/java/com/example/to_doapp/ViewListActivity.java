@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +33,8 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
     TextView title;
     ViewTaskListAdapter adapter;
     TodoItem todoItem;
+    ImageView imgBackArrow,imgUpdate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,9 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
 
         recyclerView = findViewById(R.id.recyclerView);
         title = findViewById(R.id.txt_title);
+        imgBackArrow = findViewById(R.id.img_backArrow);
+        imgUpdate = findViewById(R.id.img_updateList);
+
         todoItem = new TodoItem();
 
 
