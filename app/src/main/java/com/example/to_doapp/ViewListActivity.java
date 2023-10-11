@@ -76,14 +76,11 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         adapter.notifyDataSetChanged();
 
 
-        editAddTask.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE))
-                        performClick();
-                    return false;
-                }
-        });
+        editAddTask.setOnEditorActionListener((v, actionId, event) -> {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE))
+                    performClick();
+                return true;
+            });
 
         imgBackArrow.setOnClickListener(x -> {
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
