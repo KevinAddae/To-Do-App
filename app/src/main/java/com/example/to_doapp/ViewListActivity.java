@@ -24,11 +24,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ViewListActivity extends AppCompatActivity implements SelectItemListener, CustomDialog.DialogListener {
 
@@ -50,6 +52,7 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         setContentView(R.layout.activity_view_list);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide(); // This hides the title bar
+        Intent i = new Intent(ViewListActivity.this, MainMenu.class);
 
         recyclerView = findViewById(R.id.recyclerView);
         title = findViewById(R.id.txt_title);
@@ -75,7 +78,6 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         adapter.notifyDataSetChanged();
 
         imgBackArrow.setOnClickListener(v -> {
-            Intent i = new Intent(ViewListActivity.this, MainMenu.class);
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
             finish();
@@ -84,47 +86,58 @@ public class ViewListActivity extends AppCompatActivity implements SelectItemLis
         imgUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CollectionReference todoListRef = db.collection("tasklists");
+                CollectionReference todoListRef = db.collection("taskLists");
 
                 todoListRef.whereEqualTo("title",todoList.getTitle()).get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                for(QueryDocumentSnapshot document: task.getResult()){
-                                    docIds.add(document.getId());
-                                }
+                        .addOnCompleteListener(task -> {
+                            for(QueryDocumentSnapshot document: task.getResult()){
+                                docIds.add(document.getId());
                             }
+                            docIds.forEach(id -> {
+                                db.collection("taskLists").document(id).delete().addOnCompleteListener(taskDoc -> {
+                                    if (task.isSuccessful())
+                                        Toast.makeText(ViewListActivity.this, "Successfully removed docs", Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(ViewListActivity.this, "Something went wrong deleting", Toast.LENGTH_SHORT).show();
+                                });
+                            });
+
+                            HashMap<String, String> item = new HashMap<>();
+
+                            todoList.getTasks().forEach(data ->{
+                                item.put("title", todoList.getTitle());
+                                item.put("task", data.getItem());
+                                item.put("completedTask",Boolean.toString(data.isComplete()));
+                                todoListRef.document().set(item).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()) {
+                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(i);
+                                            finish();
+                                        } else
+                                            Toast.makeText(ViewListActivity.this, "Something went wrong adding", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                item.clear();
+                            });
                         });
-                docIds.forEach(id -> {
-                    db.collection("taskLists").document(id).delete().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                                Toast.makeText(ViewListActivity.this, "Successfully removed docs", Toast.LENGTH_SHORT).show();
-                            else
-                                Toast.makeText(ViewListActivity.this, "Something went wrong deleting", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                });
+
             }
         });
-    Taskbtn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (editAddTask.getText().toString().isEmpty())
-                Toast.makeText(ViewListActivity.this, "Field is still empty", Toast.LENGTH_SHORT).show();
-            TodoItem newTask = new TodoItem(editAddTask.getText().toString(), cbStatus.isChecked());
-            todoList.getTasks().add(newTask);
-            adapter.notifyItemInserted(todoList.getTasks().indexOf(newTask));
-            editAddTask.setText("");
+    Taskbtn.setOnClickListener(v -> {
+        if (editAddTask.getText().toString().isEmpty())
+            Toast.makeText(ViewListActivity.this, "Field is still empty", Toast.LENGTH_SHORT).show();
+        TodoItem newTask = new TodoItem(editAddTask.getText().toString(), cbStatus.isChecked());
+        todoList.getTasks().add(newTask);
+        adapter.notifyItemInserted(todoList.getTasks().indexOf(newTask));
+        editAddTask.setText("");
 
-        }
     });
     }
 
     @Override
     public void onItemClicked(TodoItem item) {
-        Toast.makeText(this, "You tapped "+ item.getItem(), Toast.LENGTH_SHORT).show();
         CustomDialog dialog = new CustomDialog();
         dialog.show(getSupportFragmentManager(),"custom dialog");
         todoItem = item;
